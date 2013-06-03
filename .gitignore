@@ -1,6 +1,20 @@
-*.class
+# Eclipse stuff
+/.classpath
+/.project
+/.settings
 
-# Package Files #
-*.jar
-*.war
-*.ear
+# NetBeans
+/nbproject
+/build.xml
+
+# vim
+.*.sw[a-p]
+
+# various other potential build files
+/build
+/bin
+/dist
+/*.jardesc
+
+# Mac filesystem dust
+.DS_Store
