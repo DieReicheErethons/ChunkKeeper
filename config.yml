@@ -1,0 +1,19 @@
+
+# Calculate average Loading Time and write it to file (only use for finding the right Time, not performance optimized!)
+testTime: true
+
+# Spam your Console with EVERY loading Time of EVERY Chunk being loaded (not recommended)
+showAllTimes: false
+
+
+# Maximum Time a Chunk is allowed to load in miliseconds. Make it persistent if it takes longer. 0 = Disable
+maxLoadTime: 0
+
+# Maximum amount of persistent Chunks, 0 = Unlimited
+maxChunks: 100
+
+# Preload all persistent Chunks when the server starts
+Preload: true
+
+# Autosave interval in minutes, 0 = Disable
+autosave: 10
