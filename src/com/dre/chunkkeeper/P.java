@@ -146,18 +146,27 @@ public class P extends JavaPlugin {
 
 				for (String worldName : worldMap.keySet()) {
 					World world = getServer().getWorld(worldName);
-					ArrayList<String> serializedChunks = (ArrayList<String>) worldMap.get(worldName);
-					count += serializedChunks.size();
+					if (world != null) {
+						ArrayList<String> serializedChunks = (ArrayList<String>) worldMap.get(worldName);
+						count += serializedChunks.size();
 
-					for (String serializedChunk : serializedChunks) {
-						String[] split = serializedChunk.split("/");
-						int x = parseInt(split[0]);
-						int z = parseInt(split[1]);
+						for (String serializedChunk : serializedChunks) {
+							String[] split = serializedChunk.split("/");
+							int x = parseInt(split[0]);
+							int z = parseInt(split[1]);
 
-						world.loadChunk(x, z);
+							world.loadChunk(x, z, false);
+						}
 					}
 				}
 
+			/*	this.log("loading some chunks");
+				for (int x = -100; x < 100; x++) {
+					for (int z = -100; z < 100; z++) {
+						getServer().getWorld("world").loadChunk(x, z, false);
+					}
+				}
+			*/
 				time = System.nanoTime() - time;
 				float ftime = (float) (time / 1000000.0);
 				this.log("Preloading Done, loaded " + count + " Chunks! (" + ftime + "ms)");
