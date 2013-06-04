@@ -16,13 +16,15 @@ public class ChunkTimingsListener implements TimingsListener {
 
 	@Override
 	public void onChunkLoad(Chunk chunk, long executionTime) {
+		if (chunk != null) {
+			if (chunk.getWorld().getName().startsWith("DXL_")) {
+				return;
+			}
 		float timeMs = (float) (executionTime / 1000000.0);
 
 		if (showLoadTime) {
 			p.log("chunkload took " + timeMs + "ms");
 		}
-
-		if (chunk != null) {
 
 			if (p.doAverage) {
 				p.amount++;
