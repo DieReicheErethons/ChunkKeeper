@@ -17,3 +17,7 @@ Preload: true
 
 # Autosave interval in minutes, 0 = Disable
 autosave: 10
+
+# Disable all Functions for these Worlds
+excludedWorlds:
+- Example

@@ -2,6 +2,7 @@ package com.dre.chunkkeeper;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 import java.io.IOException;
@@ -30,6 +31,7 @@ public class P extends JavaPlugin {
 	public long amount = 0;
 	public int overAverage = 0;
 	public float peakTime = 0;
+	public List<String> excludedWorlds;
 
 	// Listeners
 	public WorldListener worldListener;
@@ -44,6 +46,9 @@ public class P extends JavaPlugin {
 			saveDefaultConfig();
 		}	 
 		doAverage = p.getConfig().getBoolean("testTime", true);
+		if (p.getConfig().contains("excludedWorlds")) {
+			excludedWorlds = p.getConfig().getStringList("excludedWorlds");
+		}
 
 		// Listeners
 		worldListener = new WorldListener();

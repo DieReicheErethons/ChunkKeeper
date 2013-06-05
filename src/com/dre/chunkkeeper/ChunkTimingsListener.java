@@ -17,9 +17,20 @@ public class ChunkTimingsListener implements TimingsListener {
 	@Override
 	public void onChunkLoad(Chunk chunk, long executionTime) {
 		if (chunk != null) {
-			if (chunk.getWorld().getName().startsWith("DXL_")) {
+			String worldName = chunk.getWorld().getName();
+			if (worldName.startsWith("DXL_")) {
 				return;
 			}
+			if (p.excludedWorlds != null) {
+				if (!p.excludedWorlds.isEmpty()) {
+					for (String excludedWorld : p.excludedWorlds) {
+						if (worldName.equalsIgnoreCase(excludedWorld)) {
+							return;
+						}
+					}
+				}
+			}
+
 		float timeMs = (float) (executionTime / 1000000.0);
 
 		if (showLoadTime) {
