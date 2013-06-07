@@ -3,3 +3,7 @@ version: 0.1
 main: com.dre.chunkkeeper.P
 authors: [Grafe, TT_The_King, Sn0wSt0rm]
 depend: [BKCommonLib]
+commands:
+  chunkkeeper:
+    description: Reference command for ChunkKeeper.
+    aliases: [chunk]

@@ -52,6 +52,7 @@ public class P extends JavaPlugin {
 
 		// Listeners
 		worldListener = new WorldListener();
+		getCommand("ChunkKeeper").setExecutor(new CommandListener());
 		CommonPlugin.getInstance().addTimingsListener(ChunkTimingsListener.INSTANCE);
 
 		p.getServer().getPluginManager().registerEvents(worldListener, p);
