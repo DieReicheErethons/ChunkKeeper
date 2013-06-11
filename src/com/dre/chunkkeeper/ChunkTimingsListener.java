@@ -59,6 +59,7 @@ public class ChunkTimingsListener implements TimingsListener {
 							p.persistingChunks.add(chunk);
 						} else {
 							p.wrongChunkLoads++;
+							p.log("Loaded a Chunk that should already be loaded!");
 						}
 						
 					} else {

@@ -18,4 +18,17 @@ public class WorldListener implements Listener {
 		}
 	}
 
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void chunkUnloadMonitor(ChunkUnloadEvent event) {
+		Chunk chunk = event.getChunk();
+		if (chunk != null) {
+			if (P.p.persistingChunks.contains(chunk)) {
+				if (!event.isCancelled()) {
+					P.p.log("Failed to cancel Chunk Unload!");
+					P.p.cancelFails++;
+				}
+			}
+		}
+	}
+
 }

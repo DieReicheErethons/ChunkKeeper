@@ -33,6 +33,7 @@ public class P extends JavaPlugin {
 	public int overAverage = 0;
 	public float peakTime = 0;
 	public int wrongChunkLoads = 0;
+	public int cancelFails = 0;
 	public List<String> excludedWorlds;
 
 	// Listeners

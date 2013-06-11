@@ -17,7 +17,7 @@ public class CommandListener implements CommandExecutor {
 			cmd = args[0];
 		}
 
-		if (cmd.equalsIgnoreCase("loaded")) {
+		if (cmd.equalsIgnoreCase("loaded") || cmd.equalsIgnoreCase("status")) {
 
 			int loadedChunks = 0;
 			int notUsedChunks = 0;
@@ -57,6 +57,12 @@ public class CommandListener implements CommandExecutor {
 				p.msg(sender, ChatColor.DARK_RED + "" + p.wrongChunkLoads + ChatColor.RED + " Chunks were loaded from Disk again, after being made persistent! They shouldnt do that!");
 			} else {
 				p.msg(sender, ChatColor.GREEN + "All persistent Chunks never loaded from Disk again");
+			}
+
+			if (p.cancelFails != 0) {
+				p.msg(sender, ChatColor.DARK_RED + "" + p.cancelFails + ChatColor.RED + " ChunkUnloads failed to cancel!");
+			} else {
+				p.msg(sender, ChatColor.GREEN + "All ChunkUnloads for persistent Chunks were properly cancelled");
 			}
 
 		} else if (cmd.equalsIgnoreCase("stats") || cmd.equalsIgnoreCase("statistics")) {
