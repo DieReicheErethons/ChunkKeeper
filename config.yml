@@ -15,6 +15,9 @@ maxChunks: 100
 # Preload all persistent Chunks when the server starts
 Preload: true
 
+# Make Chunks persistent forever if they were over the Timelimit once, even if they are under it in the future.
+checkOnce: false
+
 # Autosave interval in minutes, 0 = Disable
 autosave: 10
 

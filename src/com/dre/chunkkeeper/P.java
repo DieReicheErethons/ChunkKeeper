@@ -27,10 +27,12 @@ public class P extends JavaPlugin {
 	public static P p;
 	public CopyOnWriteArrayList<Chunk> persistingChunks = new CopyOnWriteArrayList<Chunk>();
 	public boolean doAverage;
+	public boolean forever;
 	public long totalTime = 0;
 	public long amount = 0;
 	public int overAverage = 0;
 	public float peakTime = 0;
+	public int wrongChunkLoads = 0;
 	public List<String> excludedWorlds;
 
 	// Listeners
@@ -46,6 +48,7 @@ public class P extends JavaPlugin {
 			saveDefaultConfig();
 		}	 
 		doAverage = p.getConfig().getBoolean("testTime", true);
+		forever = p.getConfig().getBoolean("checkOnce", false);
 		if (p.getConfig().contains("excludedWorlds")) {
 			excludedWorlds = p.getConfig().getStringList("excludedWorlds");
 		}
@@ -162,6 +165,13 @@ public class P extends JavaPlugin {
 							int z = parseInt(split[1]);
 
 							world.loadChunk(x, z, false);
+							
+							if (forever) {
+								Chunk chunk = world.getChunkAt(x, z);
+								if (!persistingChunks.contains(chunk)) {
+									persistingChunks.add(chunk);
+								}
+							}
 						}
 					}
 				}

@@ -54,7 +54,13 @@ public class ChunkTimingsListener implements TimingsListener {
 			if (maxTime != 0) {
 				if (executionTime > maxTime * 1000000) {
 					if (maxChunks == 0 || p.persistingChunks.size() < maxChunks) {
-						p.persistingChunks.add(chunk);
+
+						if (!p.persistingChunks.contains(chunk)) {
+							p.persistingChunks.add(chunk);
+						} else {
+							p.wrongChunkLoads++;
+						}
+						
 					} else {
 						p.log("Maximum amount (" + maxChunks + ") of persisting Chunks reached!");
 						p.removeTimingsListener();
