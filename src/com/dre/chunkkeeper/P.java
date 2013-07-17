@@ -2,6 +2,7 @@ package com.dre.chunkkeeper;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
@@ -25,7 +26,8 @@ import com.bergerkiller.bukkit.common.internal.CommonPlugin;
 
 public class P extends JavaPlugin {
 	public static P p;
-	public CopyOnWriteArrayList<Chunk> persistingChunks = new CopyOnWriteArrayList<Chunk>();
+	public CopyOnWriteArrayList<int[]> persistentChunks = new CopyOnWriteArrayList<int[]>();
+	public CopyOnWriteArrayList<String> worldIds = new CopyOnWriteArrayList<String>();
 	public boolean doAverage;
 	public boolean forever;
 	public long totalTime = 0;
@@ -104,20 +106,22 @@ public class P extends JavaPlugin {
 
 		}
 
-		if (!persistingChunks.isEmpty()) {
+		if (!persistentChunks.isEmpty()) {
 			Map<String, ArrayList<String>> worldMap = new HashMap<String, ArrayList<String>>();
 			int count = 0;
-			for (Chunk chunk : persistingChunks) {
-				if (chunk != null) {
-					String worldName = chunk.getWorld().getName();
+			for (int[] chunkData : persistentChunks) {
 
-					if (!worldMap.containsKey(worldName)) {
-						worldMap.put(worldName, new ArrayList<String>());
-					}
+				String worldName = worldIds.get(chunkData[0]);
+				int x = chunkData[1];
+				int z = chunkData[2];
 
-					worldMap.get(worldName).add(chunk.getX() + "/" + chunk.getZ());
-					count++;
+				if (!worldMap.containsKey(worldName)) {
+					worldMap.put(worldName, new ArrayList<String>());
 				}
+
+				worldMap.get(worldName).add(x + "/" + z);
+				count++;
+
 			}
 			if (p.getConfig().getInt("maxChunks", Integer.MAX_VALUE) == count) {
 				data.set("Maximum amount of persistent Chunks reached", count);
@@ -169,9 +173,7 @@ public class P extends JavaPlugin {
 							
 							if (forever) {
 								Chunk chunk = world.getChunkAt(x, z);
-								if (!persistingChunks.contains(chunk)) {
-									persistingChunks.add(chunk);
-								}
+								addPersistingChunk(chunk);
 							}
 						}
 					}
@@ -199,6 +201,41 @@ public class P extends JavaPlugin {
 
 	public void removeTimingsListener() {
 		CommonPlugin.getInstance().removeTimingsListener(ChunkTimingsListener.INSTANCE);
+	}
+
+	public int getWorldId(World world) {
+		String name = world.getName();
+		worldIds.addIfAbsent(name);
+
+		return worldIds.indexOf(name);
+	}
+
+	public boolean isPersistingChunk(Chunk chunk) {
+		int worldId = getWorldId(chunk.getWorld());
+		int[] chunkData = { worldId, chunk.getX(), chunk.getZ() };
+
+		return hasChunkData(chunkData);
+	}
+
+	// returns false if Chunk is already Persistent
+	public boolean addPersistingChunk(Chunk chunk) {
+		int worldId = getWorldId(chunk.getWorld());
+		int[] chunkData = { worldId, chunk.getX(), chunk.getZ() };
+
+		if (!hasChunkData(chunkData)) {
+			persistentChunks.add(chunkData);
+			return true;
+		}
+		return false;
+	}
+
+	public boolean hasChunkData(int[] chunkData) {
+		for (int[] pData : persistentChunks) {
+			if (Arrays.equals(pData, chunkData)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public long getAverage() {

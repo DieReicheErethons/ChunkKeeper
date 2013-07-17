@@ -36,8 +36,12 @@ public class CommandListener implements CommandExecutor {
 
 			}
 
-			for (Chunk pChunk : p.persistingChunks) {
-				if (!pChunk.isLoaded()) {
+			for (int[] chunkData : p.persistentChunks) {
+
+				String worldName = p.worldIds.get(chunkData[0]);
+				World pWorld = p.getServer().getWorld(worldName);
+
+				if (!pWorld.isChunkLoaded(chunkData[1], chunkData[2])) {
 					notLoadedChunks++;
 				}
 			}
@@ -45,7 +49,7 @@ public class CommandListener implements CommandExecutor {
 			p.msg(sender, ChatColor.GOLD + "" + loadedChunks + ChatColor.WHITE + " Chunks are currently loaded");
 			p.msg(sender, ChatColor.GOLD + "" + notUsedChunks + ChatColor.WHITE + " of all loaded Chunks are not used and would unload (Bukkit seems to keep 256 Chunks per world though)");
 			sender.sendMessage(" ");
-			p.msg(sender,  ChatColor.GOLD + "" + p.persistingChunks.size() + ChatColor.WHITE + " Chunks are made persistent by ChunkKeeper, keeping them from unloading");
+			p.msg(sender,  ChatColor.GOLD + "" + p.persistentChunks.size() + ChatColor.WHITE + " Chunks are made persistent by ChunkKeeper, keeping them from unloading");
 
 			if (notLoadedChunks == 0) {
 				p.msg(sender, ChatColor.GREEN + "All persistent Chunks are loaded");

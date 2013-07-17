@@ -8,11 +8,11 @@ import org.bukkit.event.world.ChunkUnloadEvent;
 
 public class WorldListener implements Listener {
 
-	@EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.HIGH)
 	public void onChunkUnload(ChunkUnloadEvent event) {
 		Chunk chunk = event.getChunk();
 		if (chunk != null) {
-			if (P.p.persistingChunks.contains(chunk)) {
+			if (P.p.isPersistingChunk(chunk)) {
 				event.setCancelled(true);
 			}
 		}
@@ -22,8 +22,8 @@ public class WorldListener implements Listener {
 	public void chunkUnloadMonitor(ChunkUnloadEvent event) {
 		Chunk chunk = event.getChunk();
 		if (chunk != null) {
-			if (P.p.persistingChunks.contains(chunk)) {
-				if (!event.isCancelled()) {
+			if (!event.isCancelled()) {
+				if (P.p.isPersistingChunk(chunk)) {
 					P.p.log("Failed to cancel Chunk Unload!");
 					P.p.cancelFails++;
 				}

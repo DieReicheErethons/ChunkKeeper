@@ -53,11 +53,9 @@ public class ChunkTimingsListener implements TimingsListener {
 
 			if (maxTime != 0) {
 				if (executionTime > maxTime * 1000000) {
-					if (maxChunks == 0 || p.persistingChunks.size() < maxChunks) {
+					if (maxChunks == 0 || p.persistentChunks.size() < maxChunks) {
 
-						if (!p.persistingChunks.contains(chunk)) {
-							p.persistingChunks.add(chunk);
-						} else {
+						if (!p.addPersistingChunk(chunk)) {
 							p.wrongChunkLoads++;
 							p.log("Loaded a Chunk that should already be loaded!");
 						}
